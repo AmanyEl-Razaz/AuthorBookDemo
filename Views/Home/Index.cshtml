@@ -1,0 +1,134 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@model List<Demo.Models.Book>
+<div class="col-md-12">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Please enter the details and choose book ID from below.</h3>
+        </div>
+        <div class="panel-body">
+            <div class="form-group col-md-5">
+                <label>Author Name</label>
+                <input type="text" name="AuthorName" id="AuthorName" class="form-control" placeholder="Enter Author Name" required="" />
+            </div>
+            <div class="form-group col-md-5">
+                <label>Book ID</label>
+                <input type="text" name="BookID" id="BookID" class="form-control" placeholder="Enter Book ID" required="" />
+            </div>
+
+            <div class="form-group col-md-1">
+                <div style="float: right; display:inline-block;">
+                    <input class="btn btn-primary" name="submitButton" id="btnSave" value="Save" type="button">
+                </div>
+            </div>
+        </div>
+    </div><hr />
+    <table id="tblAuthor" class="table table-bordered table-striped table-responsive table-hover">
+        <thead>
+            <tr>
+                <th align="left" class="productth">Author Name</th>
+                <th align="left" class="productth">Book Name</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <table id="tblBook" class="table table-bordered table-striped table-responsive table-hover">
+        <thead>
+            <tr>
+                <th align="left" class="productth">Book ID</th>
+                <th align="left" class="productth">Book Name</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+    @section Scripts
+{
+        <script type="text/javascript">
+
+    $(function () {
+        LoadBookData();
+        LoadAuthorData();
+        $("#btnSave").click(function () {
+            var std = {};
+            std.AuthorName = $("#AuthorName").val();
+            std.BookID = $("#BookID").val();
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("createAuthor")',
+                data: JSON.stringify(std) ,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function () {
+                    alert("Data has been added successfully.");
+                    LoadAuthorData();
+                    LoadBookData();
+                },
+                error: function () {
+                    alert("Error while inserting data");
+                }
+            });
+            return false;
+        });
+    });
+
+    function LoadAuthorData() {
+        $("#tblAuthor tbody tr").remove();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("getAuthor")',
+            dataType: 'json',
+            data: { id: '' },
+            success: function (data) {
+                var items = '';
+                $.each(data, function (i, item) {
+                    var authorrows = "<tr>"
+                    + "<td class='prtoducttd'>" + item.AuthorName + "</td>"
+                    + "<td class='prtoducttd'>" + item.BookName + "</td>"
+                    + "</tr>";
+                    $('#tblAuthor tbody').append(authorrows);
+                });
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.Message);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+        }
+
+        });
+        return false;
+            }
+
+                function LoadBookData() {
+                    $("#tblBook tbody tr").remove();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("getBook")',
+            dataType: 'json',
+            data: { id: '' },
+            success: function (data) {
+                var items = '';
+                $.each(data, function (i, item) {
+                    var authorrows = "<tr>"
+                    + "<td class='prtoducttd'>" + item.BookID + "</td>"
+                    + "<td class='prtoducttd'>" + item.BookName + "</td>"
+                    + "</tr>";
+                    $('#tblBook tbody').append(authorrows);
+                });
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.Message);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+        }
+
+        });
+        return false;
+    }
+
+        </script>
+    }
