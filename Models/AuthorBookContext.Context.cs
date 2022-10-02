@@ -156,5 +156,14 @@ namespace Demo.Models
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBookData_Result>("GetBookData");
         }
+    
+        public virtual int AddBook(string bookName)
+        {
+            var bookNameParameter = bookName != null ?
+                new ObjectParameter("BookName", bookName) :
+                new ObjectParameter("BookName", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddBook", bookNameParameter);
+        }
     }
 }

@@ -45,6 +45,11 @@ namespace Demo.Controllers
             var data = _db.GetBookData().ToList();
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult createBook(Book book)
+        {
+            var data = _db.AddBook(book.BookName);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult Index()
         {

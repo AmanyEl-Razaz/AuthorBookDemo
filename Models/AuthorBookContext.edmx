@@ -46,6 +46,9 @@
           <Parameter Name="AuthorName" Type="nvarchar" Mode="In" />
           <Parameter Name="BookID" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="AddBook" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="BookName" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="GetAuthorBooks" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GetBookData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
@@ -155,6 +158,9 @@
             <End Role="Author" EntitySet="Authors" />
           </AssociationSet>
           <FunctionImport Name="GetBookData" ReturnType="Collection(AuthorBookModel.GetBookData_Result)" />
+          <FunctionImport Name="AddBook">
+            <Parameter Name="BookName" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GetAuthorBooks_Result">
           <Property Type="String" Name="AuthorName" Nullable="true" MaxLength="256" />
@@ -271,6 +277,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="AddBook" FunctionName="AuthorBookModel.Store.AddBook" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
