@@ -1,4 +1,3 @@
-# AuthorBookDemo
 This Project was created to assign created books to new authors.
 Using MVC, Entity Frame work , Ajax and SQL Server technologies to apply reqired actions.
 This project contains APIs for Add/View data related to Authors.
